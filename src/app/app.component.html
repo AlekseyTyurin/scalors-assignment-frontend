@@ -8,9 +8,9 @@
                        [(ngModel)]="query" (keyup)="filter($event)" placeholder="Type a Programming Languages">
         </ul>
         <div class="suggestions" *ngIf="filteredList.length > 0">
-            <ul *ngFor="let item of filteredList; let idx = index">
-                <li>
-                    <a (click)="select(item)">{{item}}</a>
+            <ul>
+                <li *ngFor="let item of filteredList; let idx = index">
+                    <a (click)="writeValue(item)">{{item}}</a>
                 </li>
             </ul>
         </div>

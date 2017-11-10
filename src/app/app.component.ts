@@ -1,18 +1,22 @@
-import {Component, OnInit, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
-import {FormGroup, FormBuilder} from "@angular/forms";
+import {Component, OnInit, ElementRef, ViewChild, AfterViewInit, forwardRef} from '@angular/core';
+import {FormGroup, FormBuilder, NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 import {Observable, Subscription} from "rxjs";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => AppComponent),
+        multi: true
+    }]
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, ControlValueAccessor {
     @ViewChild('fakeInput') public fakeInputElem: ElementRef;
 
-
     public query = '';
-    public programmLangs = ["Java", "PHP", "JavaScript", "TypeScript", "Scala", "Python", "Angular", "AngularJS", "Sass", "Less"];
+    public programmLangs: string[] = ["Java", "PHP", "JavaScript", "TypeScript", "Scala", "Python", "Angular", "AngularJS", "Ruby", "Go"];
 
     public filteredList: string[] = [];
     public selectedList: string[] = [];
@@ -20,6 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     private subscrCollect: Subscription[];
     public selectedIdx: number;
+    private _onChange = (_: any) => {};
 
     public form: FormGroup;
 
@@ -33,15 +38,33 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.form = this.formBuilder.group({
             languages: ['']
         });
-
+        const keyup = Observable.fromEvent(this.fakeInputElem.nativeElement, 'keyup').share();
         this.subscrCollect = [
-            this.controlDeletion()
+            this.backspaceDeletion()
         ];
     }
 
     //Implement Autofocus for fake Input
     ngAfterViewInit() {
         this.fakeInputElem.nativeElement.focus();
+    }
+
+    public writeValue(value: string): void {
+        if (value !== '' && this.selectedList.indexOf(value) < 0) {
+            this.selectedList.push(value);
+            this._onChange(this.selectedList);
+        }
+        this.fakeInputElem.nativeElement.value = '';
+        this.selectedIdx = 0;
+        this.filteredList = [];
+        this.fakeInputElem.nativeElement.focus();
+    }
+
+    public registerOnChange(fn: any): void {
+        this._onChange = fn;
+    }
+
+    public registerOnTouched(fn: any): void {
     }
 
     public filter(event: any) {
@@ -52,13 +75,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         } else {
             this.filteredList = [];
         }
-    }
-
-    public select(item) {
-        this.selectedList.push(item);
-        this.query = '';
-        this.filteredList = [];
-        this.fakeInputElem.nativeElement.focus();
     }
 
     public remove(item) {
@@ -89,7 +105,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     //Implement deleting by BackSpace button
-    private controlDeletion() {
+    private backspaceDeletion() {
         const keyDown = Observable.fromEvent(this.fakeInputElem.nativeElement, 'keydown').share();
         return keyDown.filter((e: any) => e.keyCode === 8)
             .subscribe((ev: Event) => {
