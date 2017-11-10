@@ -4,6 +4,10 @@ html {
     box-sizing: border-box;
 }
 
+html, body {
+    font-family: 'Roboto', sans-serif;
+}
+
 .container {
     width: 600px;
     margin-left: 10px;
@@ -39,10 +43,19 @@ html {
     background-color: #F1F1F1;
 }
 
-.form-control {
+.selected a {
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.chips-list {
+    list-style: none;
+    cursor: text;
+    flex: 1;
     display: block;
     width: 100%;
     padding: .5rem .75rem;
+    margin-bottom: 0;
     font-size: 1rem;
     line-height: 1.25;
     color: #464a4c;
@@ -56,4 +69,33 @@ html {
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s,
     -webkit-box-shadow ease-in-out .15s;
+}
+
+.chip-input-control {
+    border: none;
+    width: 15em;
+    outline: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.chip {
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #FFF;
+    background-color: #b9b9b9;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+
+.chip--input {
+    display: inline-block;
 }

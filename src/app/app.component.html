@@ -1,7 +1,16 @@
 <div class="container">
-    <form [formGroup]="mockForm">
+    <form [formGroup]="form">
+        <ul class="chips-list">
+            <li class="selected badge badge-secondary chip" *ngFor="let item of selected">
+                <span>{{item}}</span>
+                <a (click)="remove(item)"><i class="fa fa-times" aria-hidden="true"></i></a>
+            </li>
+            <li class="chip--input">
                 <input formControlName="languages" type="text" class="chip-input-control form-control"
                        [(ngModel)]="query" (keyup)="filter($event)" placeholder="Type a Programming Languages">
+            </li>
+        </ul>
+
         <div class="suggestions" *ngIf="filteredList.length > 0">
             <ul *ngFor="let item of filteredList; let idx = index">
                 <li>

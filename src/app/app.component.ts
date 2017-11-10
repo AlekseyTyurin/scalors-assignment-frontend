@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     public elementRef;
     public selectedIdx: number;
 
-    public mockForm: FormGroup;
+    public form: FormGroup;
 
     constructor(private formBuilder: FormBuilder,
                 myElement: ElementRef,) {
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.mockForm = this.formBuilder.group({
+        this.form = this.formBuilder.group({
             languages: ""
         })
     }
@@ -40,9 +40,9 @@ export class AppComponent implements OnInit {
     }
 
     public select(item) {
-        this.query = item;
+        this.selected.push(item);
+        this.query = "";
         this.filteredList = [];
-        this.selectedIdx = -1;
     }
 
     public handleBlur() {
@@ -51,6 +51,10 @@ export class AppComponent implements OnInit {
         }
         this.filteredList = [];
         this.selectedIdx = -1;
+    }
+
+    public remove(item){
+        this.selected.splice(this.selected.indexOf(item), 1);
     }
 
     public handleClick(event) {
