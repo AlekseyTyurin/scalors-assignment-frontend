@@ -1,32 +1,47 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
 import {FormGroup, FormBuilder} from "@angular/forms";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-    public query = '';
-    public programmLangs = ["Java", "PHP", "JavaScript", "TypeScript", "Scala", "Python", "GO", "AngularJS", "Angular", "Ruby"];
+export class AppComponent implements OnInit, AfterViewInit {
+    @ViewChild('fakeInput') public fakeInputElem: ElementRef;
 
-    public filteredList = [];
-    public selected = [];
+
+    public query = '';
+    public programmLangs = ["Java", "PHP", "JavaScript", "TypeScript", "Scala", "Python", "Angular", "AngularJS", "Sass", "Less"];
+
+    public filteredList: string[] = [];
+    public selectedList: string[] = [];
     public elementRef;
+
+    private subscrCollect: Subscription[];
     public selectedIdx: number;
 
     public form: FormGroup;
 
     constructor(private formBuilder: FormBuilder,
-                myElement: ElementRef,) {
+                private myElement: ElementRef,) {
         this.elementRef = myElement;
         this.selectedIdx = -1;
     }
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            languages: ""
-        })
+            languages: ['']
+        });
+
+        this.subscrCollect = [
+            this.controlDeletion()
+        ];
+    }
+
+    //Implement Autofocus for fake Input
+    ngAfterViewInit() {
+        this.fakeInputElem.nativeElement.focus();
     }
 
     public filter(event: any) {
@@ -40,9 +55,14 @@ export class AppComponent implements OnInit {
     }
 
     public select(item) {
-        this.selected.push(item);
-        this.query = "";
+        this.selectedList.push(item);
+        this.query = '';
         this.filteredList = [];
+        this.fakeInputElem.nativeElement.focus();
+    }
+
+    public remove(item) {
+        this.selectedList.splice(this.selectedList.indexOf(item), 1);
     }
 
     public handleBlur() {
@@ -51,10 +71,6 @@ export class AppComponent implements OnInit {
         }
         this.filteredList = [];
         this.selectedIdx = -1;
-    }
-
-    public remove(item){
-        this.selected.splice(this.selected.indexOf(item), 1);
     }
 
     public handleClick(event) {
@@ -71,4 +87,16 @@ export class AppComponent implements OnInit {
         }
         this.selectedIdx = -1;
     }
+
+    //Implement deleting by BackSpace button
+    private controlDeletion() {
+        const keyDown = Observable.fromEvent(this.fakeInputElem.nativeElement, 'keydown').share();
+        return keyDown.filter((e: any) => e.keyCode === 8)
+            .subscribe((ev: Event) => {
+                if (this.fakeInputElem.nativeElement.value === '' && this.selectedList.length > 0) {
+                    this.remove(this.selectedList.length - 1);
+                }
+            });
+    }
+
 }

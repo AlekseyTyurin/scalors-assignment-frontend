@@ -1,0 +1,7 @@
+.chips-list li:hover {
+    background-color: #7E7E7E;
+}
+
+.selected i.fa:hover {
+    color: red;
+}
