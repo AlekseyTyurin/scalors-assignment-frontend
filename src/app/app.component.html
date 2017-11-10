@@ -1,0 +1,13 @@
+<div class="container">
+    <form [formGroup]="mockForm">
+                <input formControlName="languages" type="text" class="chip-input-control form-control"
+                       [(ngModel)]="query" (keyup)="filter($event)" placeholder="Type a Programming Languages">
+        <div class="suggestions" *ngIf="filteredList.length > 0">
+            <ul *ngFor="let item of filteredList; let idx = index">
+                <li>
+                    <a (click)="select(item)">{{item}}</a>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

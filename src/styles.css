@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 600px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.suggestions {
+    border: solid 1px #f1f1f1;
+    position: absolute;
+    width: 624px;
+    background: white;
+}
+
+.suggestions ul {
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions ul li a {
+    padding: 5px;
+    display: block;
+    text-decoration: none;
+    color: #7E7E7E;
+}
+
+.suggestions ul li a:hover {
+    background-color: #F1F1F1;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #464a4c;
+    background-color: #fff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s,
+    -webkit-box-shadow ease-in-out .15s;
+}
