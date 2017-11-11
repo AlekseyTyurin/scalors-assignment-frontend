@@ -2,7 +2,7 @@
     <form [formGroup]="form">
         <ul class="chips-list">
             <li class="selected chip" *ngFor="let item of selectedList; let i = index;">
-                <a (click)="remove(item)">{{item}} <i class="fa fa-times" aria-hidden="true"></i></a>
+                <a (click)="removeItem(item)">{{item}} <i class="fa fa-times" aria-hidden="true"></i></a>
             </li>
             <input #fakeInput formControlName="languages" type="text" class="chip-input-control form-control"
                    [(ngModel)]="query" placeholder="Type a Programming Languages">
